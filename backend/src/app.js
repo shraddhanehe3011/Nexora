@@ -30,7 +30,19 @@ app.use(
 
 app.use(
   cors({
-    origin: config.frontendUrl,
+    origin(origin, callback) {
+      // Allow non-browser clients (no Origin) and configured frontend URLs
+      if (!origin) return callback(null, true);
+      const allowed = config.corsOrigins;
+      if (allowed.includes('*') || allowed.includes(origin)) {
+        return callback(null, true);
+      }
+      // Helpful during Render setup when FRONTEND_URL is not set yet
+      if (/\.onrender\.com$/i.test(origin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
     credentials: true,
   })
 );

@@ -1,0 +1,55 @@
+# Render Blueprint — NEXORA
+# Dashboard: New → Blueprint → connect this repo
+# After first deploy, set real URLs in Environment (see DEPLOY.md)
+
+services:
+  - type: web
+    name: nexora-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: OPEN_FOOD_FACTS_BASE_URL
+        value: https://world.openfoodfacts.org
+      - key: OPEN_FOOD_FACTS_USER_AGENT
+        value: NEXORA/1.0 (render)
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: gpt-4o-mini
+      - key: LLM_BASE_URL
+        value: https://api.openai.com/v1
+      - key: OCR_PROVIDER
+        value: tesseract
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "5"
+
+  - type: web
+    name: nexora-web
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
