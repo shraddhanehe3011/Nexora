@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+coverage/
+uploads/*
+!uploads/.gitkeep
+logs/
+*.log
+.DS_Store
+frontend/dist/
+backend/coverage/

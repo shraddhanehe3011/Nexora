@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nexora-50: #f0fdf4;
+  --color-nexora-100: #dcfce7;
+  --color-nexora-200: #bbf7d0;
+  --color-nexora-300: #86efac;
+  --color-nexora-400: #4ade80;
+  --color-nexora-500: #22c55e;
+  --color-nexora-600: #16a34a;
+  --color-nexora-700: #15803d;
+  --color-nexora-800: #166534;
+  --color-nexora-900: #14532d;
+  --color-ink: #111827;
+  --color-muted: #6b7280;
+  --color-surface: #f9fafb;
+  --color-line: #e5e7eb;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-nexora-500;
+  }
+}
+
+@layer utilities {
+  .card {
+    @apply rounded-2xl border border-line bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-nexora-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-nexora-600 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-white px-5 py-2.5 text-sm font-semibold text-ink transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-muted transition hover:bg-gray-100 hover:text-ink;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-line bg-white px-3.5 py-3 text-sm text-ink placeholder:text-muted/70 focus:border-nexora-400 focus:ring-2 focus:ring-nexora-100;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition;
+  }
+
+  .chip-active {
+    @apply border-nexora-500 bg-nexora-500 text-white;
+  }
+}
