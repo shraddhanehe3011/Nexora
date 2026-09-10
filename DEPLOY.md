@@ -33,7 +33,7 @@ Repo: https://github.com/shraddhanehe3011/Nexora
 
 | Key | Value |
 |-----|--------|
-| `VITE_API_URL` | `https://nexora-api.onrender.com/api` |
+| `VITE_API_URL` | `https://nexora-api.onrender.com/api` ← must include `/api`, and must be the **backend** URL (not the static frontend) |
 
 > Vite bakes `VITE_*` at **build** time. If you change the API URL later, trigger a frontend **Manual Deploy → Clear build cache & deploy**.
 
