@@ -10,6 +10,16 @@ async function connectDatabase() {
 
   await mongoose.connect(config.mongodbUri, {
     dbName: 'nexora',
+    serverSelectionTimeoutMS: 15000,
+    connectTimeoutMS: 15000,
+  });
+
+  mongoose.connection.on('disconnected', () => {
+    console.error('MongoDB disconnected');
+  });
+
+  mongoose.connection.on('error', (err) => {
+    console.error('MongoDB error:', err.message);
   });
 
   return mongoose.connection;

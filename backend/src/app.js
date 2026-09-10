@@ -71,13 +71,17 @@ app.use(
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-app.get('/api/health', (req, res) =>
-  success(res, {
+app.get('/api/health', (req, res) => {
+  const mongoStates = ['disconnected', 'connected', 'connecting', 'disconnecting'];
+  const readyState = require('mongoose').connection.readyState;
+  return success(res, {
     status: 'ok',
     service: 'nexora-api',
+    mongo: mongoStates[readyState] || String(readyState),
     timestamp: new Date().toISOString(),
-  })
-);
+  });
+});
+
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);

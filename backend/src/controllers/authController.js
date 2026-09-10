@@ -1,9 +1,21 @@
 const bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const { AppError, success } = require('../utils/helpers');
 const { signToken } = require('../middleware/authMiddleware');
 
+function assertDatabaseReady() {
+  if (mongoose.connection.readyState !== 1) {
+    throw new AppError(
+      'Database is not connected. Check Render MONGODB_URI and Atlas Network Access (0.0.0.0/0).',
+      503,
+      'DB_UNAVAILABLE'
+    );
+  }
+}
+
 async function register(req, res) {
+  assertDatabaseReady();
   const { username, email, password } = req.body;
 
   const existing = await User.findOne({ email: email.toLowerCase() });
@@ -30,6 +42,7 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
+  assertDatabaseReady();
   const { email, password } = req.body;
 
   const user = await User.findOne({ email: email.toLowerCase() }).select('+passwordHash');

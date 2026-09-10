@@ -86,7 +86,28 @@ Rewrite rule (SPA):
 
 ---
 
-## After deploy
+## Fix login 500 on Render (MongoDB)
+
+If `/api/auth/login` returns 500 / DB timeout:
+
+1. Open `https://nexora3.onrender.com/api/health` — `mongo` should be `"connected"`.
+2. Render → **nexora3 (backend)** → Environment → set:
+
+```
+MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster0.cnxttq8.mongodb.net/?appName=Cluster0
+NODE_ENV=production
+```
+
+3. MongoDB Atlas → **Network Access** → Add IP Address → **Allow Access from Anywhere** (`0.0.0.0/0`).
+4. Redeploy the backend service.
+5. Confirm health shows `"mongo":"connected"`, then try login again.
+
+Frontend must use:
+
+```
+VITE_API_URL=https://nexora3.onrender.com/api
+```
+
 
 1. Open frontend URL → Sign up / Login.
 2. Hit `https://<api>.onrender.com/api/health` → should return `{ success: true, ... }`.

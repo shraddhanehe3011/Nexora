@@ -42,6 +42,23 @@ function errorHandler(err, req, res, next) {
     message = 'Authentication token has expired';
   }
 
+  if (
+    err.name === 'MongooseError' &&
+    /buffering timed out/i.test(err.message || '')
+  ) {
+    statusCode = 503;
+    code = 'DB_UNAVAILABLE';
+    message =
+      'Database is not connected. Check Render MONGODB_URI and Atlas Network Access (allow 0.0.0.0/0).';
+  }
+
+  if (err.name === 'MongoServerSelectionError') {
+    statusCode = 503;
+    code = 'DB_UNAVAILABLE';
+    message =
+      'Cannot reach MongoDB Atlas. Allow Render IPs in Atlas Network Access (0.0.0.0/0) and verify MONGODB_URI.';
+  }
+
   if (err.name === 'MulterError') {
     statusCode = 400;
     code = 'UPLOAD_ERROR';
